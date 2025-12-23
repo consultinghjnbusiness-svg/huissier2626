@@ -1,0 +1,8 @@
+
+{
+  "name": "HuissierPro Congo",
+  "description": "Une application professionnelle pour les huissiers de justice au Congo-Brazzaville, permettant de transformer des dictées vocales de terrain en actes juridiques conformes aux normes OHADA.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

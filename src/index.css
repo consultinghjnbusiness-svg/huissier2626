@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Typographie globale */
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .legal-title {
+    font-family: 'Playfair Display', serif !important;
+  }
+}
+
+/* Styles impression */
+@media print {
+  body { background: white !important; }
+  nav, aside, button, .print-hidden { display: none !important; }
+  main { padding: 0 !important; margin: 0 !important; }
+  .print-container { 
+    box-shadow: none !important; 
+    border: none !important; 
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  .watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 8rem;
+    color: rgba(0,0,0,0.03) !important;
+    pointer-events: none;
+    z-index: 0;
+    font-weight: 900;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  textarea { border: none !important; overflow: hidden !important; }
+}
