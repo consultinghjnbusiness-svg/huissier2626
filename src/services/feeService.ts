@@ -12,5 +12,5 @@ const BASE_FEES: Record<ActType, number> = {
 };
 
 export const calculateFees = (actType: ActType): number => {
-  return BASE_FEES[actType] ?? 25000;
+  return BASE_FEES[actType] ?? 25000; // valeur par défaut
 };

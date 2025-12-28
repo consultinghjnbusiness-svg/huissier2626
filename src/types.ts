@@ -29,6 +29,7 @@ export interface LegalAct {
   legalContent: string;
   status: 'draft' | 'final';
   evidence: string[];
+  fees: ActFees; // <-- ajouté
 }
 
 export type InputMethod = 'audio' | 'written';
@@ -62,7 +63,20 @@ export interface Evidence {
 }
 
 export interface ActFees {
-  baseFee: number;
-  terrainExpense: number;
+  emoluments: number;    // <-- changé
+  debours: number;       // <-- ajouté  
+  tva: number;           // <-- ajouté
   total: number;
+}
+
+export interface LegalAct {
+  id: string;
+  title: string;
+  type: ActType;
+  date: string;
+  rawTranscription: string;
+  legalContent: string;
+  status: 'draft' | 'final';
+  evidence: string[];
+  fees: ActFees;         // <-- avec la nouvelle structure
 }
