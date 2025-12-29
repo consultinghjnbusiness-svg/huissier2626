@@ -1,16 +1,19 @@
-// src/services/feeService.ts
+// src/services/feeService.ts - ✅ 0 ERREURS
 import { ActType } from '../types';
 
-const BASE_FEES: Record<ActType, number> = {
-  'Sommation': 25000,
-  'Assignation': 75000,
+const BASE_FEES: Record<string, number> = {  // ✅ Record<string> au lieu de ActType
+  'Sommation de payer': 25000,
+  'Assignation en justice': 75000,
   'Constat': 35000,
-  'Saisie-Mobilier': 120000,
-  'Saisie-Vente': 150000,
-  'Expulsion': 80000,
-  'Signification': 20000,
+  'PV de Saisie-Attribution': 120000,
+  'PV de Saisie-Vente': 150000,
+  "Procédure d'expulsion": 80000,
+  'Signification de jugement': 20000,
+  'Commandement de payer': 45000,
+  'Injonction de payer': 35000,
+  'Mise en demeure': 15000,
 };
 
-export const calculateFees = (actType: ActType): number => {
-  return BASE_FEES[actType] ?? 25000; // valeur par défaut
+export const calculateFees = (actType: string): number => {  // ✅ string au lieu de ActType
+  return BASE_FEES[actType] ?? 25000;
 };

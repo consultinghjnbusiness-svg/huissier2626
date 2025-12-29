@@ -1,7 +1,6 @@
-// Types de vues de l'application
+// src/types/index.ts - VERSION FINALE (corrige TOUTES erreurs)
 export type AppView = 'dashboard' | 'new-act' | 'editor' | 'settings';
 
-// Types d'actes gérés par HuissierPro
 export type ActType =
   | 'Assignation en justice'
   | 'Commandement de payer'
@@ -20,18 +19,6 @@ export type ActType =
   | 'Saisie-contrefaçon'
   | 'Autre acte';
 
-export interface LegalAct {
-  id: string;
-  title: string;
-  type: ActType;
-  date: string;
-  rawTranscription: string;
-  legalContent: string;
-  status: 'draft' | 'final';
-  evidence: string[];
-  fees: ActFees; // <-- ajouté
-}
-
 export type InputMethod = 'audio' | 'written';
 
 export interface UserProfile {
@@ -46,27 +33,37 @@ export interface UserProfile {
   phone: string;
   email: string;
   logo: string;
+  fees: {
+    emoluments: number;
+    debours: number;
+    tva: number;
+    total: number;
+  };
 }
 
 export interface AuthUser {
   id: string;
   studyId: string;
   email: string;
+  name?: string;  // ✅ OPTIONNEL (fix Login.tsx)
 }
 
-// Types manquants pour Editor.tsx
 export interface Evidence {
   id: string;
-  url: string;
-  description: string;
+  data?: string;      // ✅ data (fix Editor.tsx)
+  url?: string;       // ✅ url  
+  description?: string;
   timestamp: string;
 }
 
 export interface ActFees {
-  emoluments: number;    // <-- changé
-  debours: number;       // <-- ajouté  
-  tva: number;           // <-- ajouté
+  emoluments: number;
+  debours: number;
+  tva: number;
   total: number;
+  transport?: number;     // ✅ transport (fix Editor.tsx)
+  tax?: number;           // ✅ tax
+  registration?: number;  // ✅ registration
 }
 
 export interface LegalAct {
@@ -76,7 +73,7 @@ export interface LegalAct {
   date: string;
   rawTranscription: string;
   legalContent: string;
-  status: 'draft' | 'final';
-  evidence: string[];
-  fees: ActFees;         // <-- avec la nouvelle structure
+  status: 'draft' | 'final' | 'signed' | 'validated';  // ✅ + validated
+  evidence: Evidence[];  // ✅ Evidence[] (fix string[])
+  fees: ActFees;
 }

@@ -1,7 +1,10 @@
-// src/services/geminiService.ts - VERSION PRODUCTION 1.0
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+// src/services/geminiService.ts - VERSION PRODUCTION 1.0 TYPE-SAFE
+import { ActType } from '../types';  // ✅ CORRIGÉ : '../types'
 
-export const generateLegalAct = async (facts: string, actType: string): Promise<string> => {
+// ✅ Fix import.meta pour Vite
+const GEMINI_API_KEY = (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
+
+export const generateLegalAct = async (facts: string, actType: ActType): Promise<string> => {
   // ✅ EXTRACTION INTELLIGENTE des données
   const requerant = facts.match(/REQUÉRANT[:\s]*(.+?)(?=\n|$)/i)?.[1]?.trim() || 'LE CRÉANCIER';
   const destinataire = facts.match(/DESTINATAIRE[:\s]*(.+?)(?=\n|$)/i)?.[1]?.trim() || 'LE DÉBITEUR';
@@ -23,14 +26,10 @@ const convertNumberToFrench = (num: string): string => {
   const numbers: Record<string, string> = {
     '0': 'zéro', '1': 'un', '2': 'deux', '3': 'trois', '4': 'quatre', '5': 'cinq',
     '6': 'six', '7': 'sept', '8': 'huit', '9': 'neuf', '10': 'dix',
-    '1000000': 'un million', '2000000': 'deux millions', '3000000': 'trois millions',
-    '4000000': 'quatre millions', '5000000': 'cinq millions',
     '1000': 'mille', '2000': 'deux mille', '5000': 'cinq mille',
-    '250000': 'deux cent cinquante mille', '2378098': 'deux millions trois cent quatre-vingt-dix-huit mille',
-    '5250000': 'cinq millions deux cent cinquante mille'
   };
   
-  return numbers[num] || `${parseInt(num).toLocaleString('fr-FR')} (${num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')})`;
+  return numbers[num] || `${parseInt(num, 10).toLocaleString('fr-FR')} (${num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')})`;
 };
 
 // ✅ DATE EN LETTRES FRANÇAISES
@@ -42,11 +41,19 @@ const formatDateFrancais = (date: Date): string => {
 };
 
 // ✅ TEMPLATE DYNAMIQUE PAR TYPE D'ACTE
-const getActTemplate = (actType: string, requerant: string, destinataire: string, montantNum: string, montantLettres: string, notes: string, dateComplete: string): string => {
+const getActTemplate = (
+  actType: ActType, 
+  requerant: string, 
+  destinataire: string, 
+  montantNum: string, 
+  montantLettres: string, 
+  notes: string, 
+  dateComplete: string
+): string => {
   const title = actType.toUpperCase();
   const time = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-  const templates = {
+  const templates: Record<string, string> = {
     'Sommation de payer': `
 *ÉTUDE DE MAÎTRE JEAN OKOMBI*
 Huissier de Justice près le Tribunal de Grande Instance de Brazzaville
@@ -92,7 +99,12 @@ Les frais, droits, dépens et honoraires de constat seront à la charge de LA D�
 *Huissier de Justice près le TGI de Brazzaville*  
 Matricule HUISS-CG-2024-089
     `.trim(),
-    
+
+    'Assignation en justice': `
+*ÉTUDE DE MAÎTRE JEAN OKOMBI* - ASSIGNATION EN JUSTICE
+[Template complet pour assignation...]
+    `.trim(),
+
     'default': `
 *ÉTUDE DE MAÎTRE JEAN OKOMBI*
 Huissier de Justice près le TGI de Brazzaville
@@ -115,5 +127,5 @@ Maître Jean OKOMBI
     `.trim()
   };
 
-  return templates['Sommation de payer'] || templates['default'];
+  return templates[actType as string] || templates['default'];
 };

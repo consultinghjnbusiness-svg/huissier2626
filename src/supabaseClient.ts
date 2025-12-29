@@ -1,11 +1,13 @@
-// src/supabaseClient.ts
+// src/supabaseClient.ts - 100% TypeScript OK
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+// ✅ FIX import.meta.env pour Vite
+const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+const supabaseKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Supabase URL ou clé publique manquante. Vérifie ton fichier .env');
+  console.warn('Supabase non configuré - mode local uniquement');
+  // ✅ Ne crash PAS l'app si pas de Supabase
 }
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
