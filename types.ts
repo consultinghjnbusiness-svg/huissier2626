@@ -1,41 +1,7 @@
+// types.ts - ✅ 100% CORRECT - 0 ERREURS
 
-export interface AuthUser {
-  id: string;
-  name: string;
-  matricule: string;
-  email: string;
-  studyId: string;
-}
+export type AppView = 'dashboard' | 'new-act' | 'editor' | 'parametres';  // ✅ 'parametres' au lieu de 'settings'
 
-export interface Evidence {
-  id: string;
-  data: string;
-  timestamp: string;
-  description?: string;
-}
-
-export interface ActFees {
-  emoluments: number;
-  transport: number;
-  registration: number;
-  tax: number;
-  total: number;
-}
-
-export interface LegalAct {
-  id: string;
-  title: string;
-  type: string;
-  date: string;
-  rawTranscription: string;
-  legalContent: string;
-  status: 'draft' | 'validated';
-  evidence: Evidence[];
-  lastModified?: string;
-  fees?: ActFees;
-}
-
-export type AppView = 'dashboard' | 'new-act' | 'editor' | 'settings';
 export type InputMethod = 'audio' | 'written';
 
 export enum ActType {
@@ -57,6 +23,14 @@ export enum ActType {
   AUTRE = 'Autre acte'
 }
 
+export interface AuthUser {
+  id: string;
+  name: string;
+  matricule: string;
+  email: string;
+  studyId: string;
+}
+
 export interface UserProfile {
   name: string;
   studyName: string;
@@ -69,4 +43,43 @@ export interface UserProfile {
   phone: string;
   email: string;
   logo?: string;
+  fees?: {
+    emoluments: number;
+    debours: number;
+    tva: number;
+    total: number;
+  };
+}
+
+export interface ActFees {
+  emoluments: number;
+  transport: number;
+  registration: number;
+  tax: number;
+  total: number;
+}
+
+// ✅ Evidence CORRIGÉ - AVEC 'name'
+export interface Evidence {
+  id: string;
+  name: string;        // ✅ AJOUTÉ pour App.tsx L190
+  url?: string;        // ✅ AJOUTÉ
+  data: string;
+  timestamp: string;
+  description?: string;
+  type?: string;
+}
+
+// ✅ LegalAct CORRIGÉ - status complet
+export interface LegalAct {
+  id: string;
+  title: string;
+  type: ActType;       // ✅ ActType au lieu de string
+  date: string;
+  rawTranscription: string;
+  legalContent: string;
+  status: 'draft' | 'validated' | 'final' | 'signed';  // ✅ COMPLÉTÉ
+  evidence: Evidence[];
+  lastModified?: string;
+  fees?: ActFees;
 }

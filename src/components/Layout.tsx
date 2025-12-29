@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppView, UserProfile } from '../types';
+import { AppView, UserProfile } from '../../types';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -73,8 +73,8 @@ const Layout: React.FC<LayoutProps> = ({
           <NavItem
             icon="fas fa-cog"
             label="Paramètres"
-            active={activeView === 'settings'}
-            onClick={() => setActiveView('settings')}
+            active={activeView === 'parametres'}
+            onClick={() => setActiveView('parametres')}
           />
         </nav>
 
@@ -104,7 +104,7 @@ const Layout: React.FC<LayoutProps> = ({
         </div>
       </aside>
 
-      {/* Navbar mobile */}
+      {/* Navbar mobile - ✅ FIXÉ 'parametres' partout */}
       <nav className="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-xl">
         <div className="flex items-center gap-2">
           {profile.logo ? (
@@ -139,8 +139,8 @@ const Layout: React.FC<LayoutProps> = ({
           />
           <MobileNavButton
             icon="fas fa-cog"
-            active={activeView === 'settings'}
-            onClick={() => setActiveView('settings')}
+            active={activeView === 'parametres'}
+            onClick={() => setActiveView('parametres')}
           />
           <button
             onClick={onLogout}
