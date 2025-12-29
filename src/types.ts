@@ -50,11 +50,13 @@ export interface AuthUser {
 
 export interface Evidence {
   id: string;
-  data?: string;      // ✅ data (fix Editor.tsx)
-  url?: string;       // ✅ url  
-  description?: string;
-  timestamp: string;
+  name: string;  // AJOUTE cette propriété manquante
+  url: string;
+  type: string;
+   timestamp?: string;
+  // autres props...
 }
+
 
 export interface ActFees {
   emoluments: number;
